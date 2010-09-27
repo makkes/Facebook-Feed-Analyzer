@@ -1,7 +1,6 @@
 package de.maxwerner.ffa;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -19,11 +18,11 @@ import de.maxwerner.ffa.impl.FacebookFeedAnalyzer;
 
 public class Application {
     
-    public final static DateFormat OUTPUT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
+    public static final DateFormat OUTPUT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    public static final FacebookFeedAnalyzer analyzer = new FacebookFeedAnalyzer();
+    
     public static void main(String[] args) throws IOException, JSONException, ParseException {
-        final FacebookFeedAnalyzer analyzer = new FacebookFeedAnalyzer();
-        final URL baseUrl = new URL("https://graph.facebook.com/weltkompakt/feed");
+        final URL baseUrl = new URL(args[0]);
         final JSONObject feed = analyzer.getFeed(baseUrl);
 
         final Calendar from = Calendar.getInstance();

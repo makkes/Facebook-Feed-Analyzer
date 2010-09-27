@@ -30,8 +30,6 @@ import org.json.JSONObject;
 import de.maxwerner.ffa.FeedAnalyzer;
 
 /**
- *
- *
  * @author Max Jonas Werner <max.jonas.werner@justsoftwareag.com>
  */
 public class FacebookFeedAnalyzer implements FeedAnalyzer {
