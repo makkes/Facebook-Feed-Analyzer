@@ -9,4 +9,4 @@ cp README $DISTDIR
 
 zip -r facebook-feed-analyzer.zip $DISTDIR
 
-#rm -rf $DISTDIR
+rm -rf $DISTDIR

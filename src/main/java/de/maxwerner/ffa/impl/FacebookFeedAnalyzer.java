@@ -35,6 +35,24 @@ import de.maxwerner.ffa.FeedAnalyzer;
 public class FacebookFeedAnalyzer implements FeedAnalyzer {
     
     private final static DateFormat INPUT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+//    private final static String APP_ID = "147225311985489";
+//    private final static String APP_SECRET = "1cf6e21e1f05d6439128c50969e9c6bd";
+    
+    private final static String FEED_URL_PATTERN = "https://graph.facebook.com/__PROFILE__/feed";
+    private final static String PAGE_URL_PATTERN = "https://graph.facebook.com/__PROFILE__";
+    
+    private final String feedUrl;
+    private final String pageUrl;
+    
+    public FacebookFeedAnalyzer(final String profile) {
+        feedUrl = FEED_URL_PATTERN.replaceAll("__PROFILE__", profile);
+        pageUrl = PAGE_URL_PATTERN.replace("__PROFILE__", profile);
+    }
+    
+    public Long getPageId() throws MalformedURLException, IOException, JSONException {
+        final JSONObject raw = getJSON(pageUrl);
+        return new Long(raw.getLong("id"));
+    }
 
     /**
      * Extracts a set of messages from a feed which have been created
@@ -76,12 +94,11 @@ public class FacebookFeedAnalyzer implements FeedAnalyzer {
     @Override
     public JSONObject getNextPage(final JSONObject feed) throws JSONException, MalformedURLException, IOException {
         final String nextUrl = feed.getJSONObject("paging").getString("next");
-        return getFeed(new URL(nextUrl));
+        return getJSON(nextUrl);
     }
     
-    @Override
-    public JSONObject getFeed(final URL baseUrl) throws IOException, JSONException {
-        final InputStream is = baseUrl.openStream();
+    private JSONObject getJSON(final String url) throws MalformedURLException, IOException, JSONException {
+        final InputStream is = new URL(url).openStream();
         final int blockSize = 8192;
         final byte[] chunk = new byte[blockSize];
         int chunkSize;
@@ -90,6 +107,26 @@ public class FacebookFeedAnalyzer implements FeedAnalyzer {
             rawJson.append(new String(chunk, 0, chunkSize));
         }
         return new JSONObject(rawJson.toString());
+    }
+    
+    @Override
+    public JSONObject getFeed() throws IOException, JSONException {
+        return getJSON(feedUrl);
+    }
+
+    @Override
+    public Long getCommentCount(final JSONObject message) throws JSONException {
+        final JSONObject comments = message.optJSONObject("comments");
+        if(comments == null) {
+            return 0L;
+        }
+        return comments.getLong("count");
+    }
+
+    @Override
+    public Long getLikeCount(JSONObject message) throws JSONException {
+        final Long likes = message.optLong("likes");
+        return likes == null ? 0L : likes;
     }
 
 }

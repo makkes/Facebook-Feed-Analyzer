@@ -1,3 +1,3 @@
 #!/bin/sh
 
-java -jar facebook-feed-analyzer.jar $1
+java -jar facebook-feed-analyzer.jar $@
