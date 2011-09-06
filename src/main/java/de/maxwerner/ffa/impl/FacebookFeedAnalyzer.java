@@ -1,15 +1,3 @@
-/**
- * Created at 31 Aug 2010 11:27:27
- * Created by max
- *
- * (c) Copyright 2010 just software AG
- *
- * This file contains unpublished, proprietary trade secret information of
- * just software AG. Use, transcription, duplication and
- * modification are strictly prohibited without prior written consent of
- * just software AG.
- */
-
 package de.maxwerner.ffa.impl;
 
 import java.io.IOException;
@@ -30,7 +18,7 @@ import org.json.JSONObject;
 import de.maxwerner.ffa.FeedAnalyzer;
 
 /**
- * @author Max Jonas Werner <max.jonas.werner@justsoftwareag.com>
+ * @author Max Jonas Werner <mail@makk.es>
  */
 public class FacebookFeedAnalyzer implements FeedAnalyzer {
     
